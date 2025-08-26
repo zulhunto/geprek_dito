@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajer Penjualan GEPREK DITO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 50%, #fecaca 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .floating-btn {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .menu-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .menu-card:hover {
+            transform: translateY(-8px);
+            border-color: #ef4444;
+            box-shadow: 0 25px 50px -12px rgba(239, 68, 68, 0.25);
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+        }
+        .stats-card:hover {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fecaca;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen font-['Inter']">
+    <!-- Login Modal Overlay -->
+    <div id="loginOverlay" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 backdrop-blur-sm">
+        <div class="glass-effect rounded-2xl shadow-2xl p-10 w-full max-w-md mx-4 border border-white/20">
+            <div class="text-center mb-8">
+                <div class="flex justify-center mb-6">
+                    <div class="relative">
+                        <img src="logo/Desain tanpa judul.png" alt="Geprek Dito Logo" class="h-28 w-auto drop-shadow-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="text-4xl font-bold text-red-600 drop-shadow-lg" style="display: none;">🍗</div>
+                        <div class="absolute -inset-4 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 blur-xl"></div>
+                    </div>
+                </div>
+                <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800 mb-2">GEPREK DITO</h1>
+                <p class="text-gray-600 font-medium">Login</p>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-red-500 to-red-600 mx-auto mt-4 rounded-full"></div>
+            </div>
+            
+            <!-- Login Type Selector -->
+            <div class="mb-6">
+                <div class="flex space-x-2 bg-gray-100 p-1 rounded-xl">
+                    <button id="adminLoginBtn" class="flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-300 bg-white text-gray-700 shadow-sm">
+                        Admin
+                    </button>
+                    <button id="userLoginBtn" class="flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-300 text-gray-600 hover:text-gray-800">
+                        User
+                    </button>
+                </div>
+            </div>
+            
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400 group-focus-within:text-red-500 transition-colors"></i>
+                        </div>
+                        <input type="text" id="username" name="username" required 
+                               class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                               placeholder="Masukkan username">
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400 group-focus-within:text-red-500 transition-colors"></i>
+                        </div>
+                        <input type="password" id="password" name="password" required 
+                               class="w-full pl-12 pr-12 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                               placeholder="Masukkan password">
+                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-4 flex items-center">
+                            <i class="fas fa-eye text-gray-400 hover:text-red-500 transition-colors"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="loginError" class="hidden bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm font-medium">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <span id="errorMessage">Username atau password salah!</span>
+                </div>
+                
+                <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <i class="fas fa-sign-in-alt mr-3"></i> Login
+                </button>
+            </form>
+            
+            <div class="mt-8 text-center space-y-3">
+                <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-full border border-blue-200">
+                    <i class="fas fa-user-shield mr-2 text-blue-600"></i>
+                    <span class="text-sm text-blue-700 font-medium">Admin: admin / admin123</span>
+                </div>
+                <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-50 to-emerald-50 rounded-full border border-green-200">
+                    <i class="fas fa-user mr-2 text-green-600"></i>
+                    <span class="text-sm text-green-700 font-medium">User: user / user123</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Content (Hidden until user login) -->
+    <div id="userContent" class="hidden">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+            <header class="mb-12 text-center">
+                <div class="relative">
+                    <div class="flex justify-center mb-8">
+                        <div class="relative">
+                            <img src="logo/Desain tanpa judul.png" alt="Geprek Dito Logo" class="h-40 w-auto drop-shadow-2xl" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div class="text-6xl font-bold text-red-600 drop-shadow-2xl" style="display: none;">🍗</div>
+                            <div class="absolute -inset-8 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-10 blur-3xl"></div>
+            </div>
+                    </div>
+                    <h1 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800 mb-3 tracking-tight">
+                GEPREK DITO
+            </h1>
+                    <p class="text-xl text-gray-600 font-medium mb-6">Dashboard Pengiriman</p>
+                    <div class="w-32 h-2 bg-gradient-to-r from-red-500 to-red-600 mx-auto rounded-full shadow-lg"></div>
+                    
+                    <!-- Logout Button -->
+                    <div class="mt-8">
+                        <button id="userLogoutBtn" class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center mx-auto shadow-lg hover:shadow-xl transform hover:scale-105">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Delivery Orders Summary -->
+            <div class="glass-effect rounded-2xl shadow-xl p-8 card-hover mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                        <i class="fas fa-truck text-white text-lg"></i>
+                    </div>
+                    Ringkasan Pengiriman Hari Ini
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-xl border-2 border-green-200">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-green-600">Total Pesanan</p>
+                                <p id="totalDeliveryOrders" class="text-3xl font-black text-green-700">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-clipboard-list text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl border-2 border-blue-200">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-blue-600">Total Item</p>
+                                <p id="totalDeliveryItems" class="text-3xl font-black text-blue-700">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-box text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-xl border-2 border-purple-200">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-purple-600">Total Nilai</p>
+                                <p id="totalDeliveryValue" class="text-3xl font-black text-purple-700">Rp 0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-money-bill-wave text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delivery Orders Table -->
+            <div class="glass-effect rounded-2xl shadow-xl p-8 card-hover">
+                <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                        <i class="fas fa-list-alt text-white text-lg"></i>
+                    </div>
+                    Daftar Pesanan Pengiriman
+                </h2>
+                
+                <div class="overflow-x-auto rounded-xl border-2 border-gray-100 shadow-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Menu</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Jumlah</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Harga Satuan</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Total</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Pengirim</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userOrdersTable" class="bg-white divide-y divide-gray-100">
+                            <!-- Delivery orders will be inserted here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until admin login) -->
+    <div id="mainContent" class="hidden">
+        <div class="container mx-auto px-4 py-8">
+            <!-- Header -->
+            <header class="mb-12 text-center">
+                <div class="relative">
+                    <div class="flex justify-center mb-8">
+                        <div class="relative">
+                            <img src="logo/Desain tanpa judul.png" alt="Geprek Dito Logo" class="h-40 w-auto drop-shadow-2xl" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div class="text-6xl font-bold text-red-600 drop-shadow-2xl" style="display: none;">🍗</div>
+                            <div class="absolute -inset-8 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-10 blur-3xl"></div>
+                        </div>
+                    </div>
+                    <h1 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800 mb-3 tracking-tight">
+                        GEPREK DITO
+                    </h1>
+                    <p class="text-xl text-gray-600 font-medium mb-6">Kelola bisnis ayam Anda dengan mudah</p>
+                    <div class="w-32 h-2 bg-gradient-to-r from-red-500 to-red-600 mx-auto rounded-full shadow-lg"></div>
+                    
+                    <!-- Logout Button -->
+                    <div class="mt-8">
+                        <button id="logoutBtn" class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center mx-auto shadow-lg hover:shadow-xl transform hover:scale-105">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </button>
+                    </div>
+                </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Order Form -->
+                <div class="lg:col-span-1 glass-effect rounded-2xl shadow-xl p-8 card-hover">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                            <i class="fas fa-utensils text-white text-lg"></i>
+                        </div>
+                        Pesanan Baru
+                </h2>
+                
+                    <form id="orderForm" class="space-y-6">
+                        <fieldset id="formFieldset" class="space-y-6">
+                        <div>
+                                <label for="menu" class="block text-sm font-semibold text-gray-700 mb-2">Menu</label>
+                                <select id="menu" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300 bg-white/80">
+                                <option value="" disabled selected>Pilih menu</option>
+                                <option value="Ayam Geprek Paket">Ayam Geprek Paket</option>
+                                <option value="Ayam TO'O">Ayam TO'O</option>
+                                <option value="Ayam Geprek Paket Mie">Ayam Geprek Paket Mie</option>
+                                <option value="Ayam Geprek Paket Mie + Nasi">Ayam Geprek Paket Mie + Nasi</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                                <label for="quantity" class="block text-sm font-semibold text-gray-700 mb-2">Jumlah</label>
+                                <input type="number" id="quantity" min="1" value="1" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300 bg-white/80">
+                        </div>
+                        
+                        <div>
+                                <label for="unitPrice" class="block text-sm font-semibold text-gray-700 mb-2">Harga Satuan (Rp)</label>
+                                <input type="number" id="unitPrice" readonly class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-gray-50/80 font-semibold text-gray-700">
+                        </div>
+                        
+                        <div>
+                                <label for="totalPrice" class="block text-sm font-semibold text-gray-700 mb-2">Total Harga (Rp)</label>
+                                <input type="number" id="totalPrice" readonly class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-gradient-to-r from-red-50 to-red-100 font-bold text-red-600 text-lg">
+                        </div>
+                        
+                        <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Opsi Pengiriman</label>
+                                <div class="space-y-3">
+                                <div class="flex items-center">
+                                        <input type="radio" id="delivered" name="delivery" value="Delivered" class="h-5 w-5 text-red-600 focus:ring-red-500 border-2 border-gray-300">
+                                        <label for="delivered" class="ml-3 block text-sm font-medium text-gray-700">Delivered</label>
+                                </div>
+                                    <div id="deliveryNameContainer" class="hidden pl-8 pt-2">
+                                    <label for="deliveryName" class="block text-sm font-medium text-gray-700">Nama Pengirim</label>
+                                        <input type="text" id="deliveryName" placeholder="cth: Doni" class="mt-2 w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300">
+                                </div>
+                                <div class="flex items-center">
+                                        <input type="radio" id="notDelivered" name="delivery" value="Not Delivered" checked class="h-5 w-5 text-red-600 focus:ring-red-500 border-2 border-gray-300">
+                                        <label for="notDelivered" class="ml-3 block text-sm font-medium text-gray-700">Not Delivered</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                            <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:transform-none">
+                                <i class="fas fa-plus-circle mr-3"></i> Tambah Pesanan
+                        </button>
+                    </fieldset>
+                </form>
+            </div>
+            
+            <!-- Sales Summary -->
+                <div class="lg:col-span-2 glass-effect rounded-2xl shadow-xl p-8 card-hover">
+                    <div class="flex justify-between items-center mb-8 flex-wrap gap-4">
+                    <h2 id="salesTitle" class="text-2xl font-bold text-gray-800 flex items-center">
+                            <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                                <i class="fas fa-clipboard-list text-white text-lg"></i>
+                            </div>
+                            Penjualan
+                    </h2>
+                        <div class="flex items-center gap-3">
+                            <input type="date" id="viewDate" class="px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300 bg-white/80">
+                            <div id="filterButtons" class="flex space-x-2">
+                                <button id="filterAll" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg">Semua</button>
+                                <button id="filterDelivered" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 bg-gray-200 text-gray-700 hover:bg-gray-300">Delivered</button>
+                                <button id="filterNotDelivered" class="px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 bg-gray-200 text-gray-700 hover:bg-gray-300">Not Delivered</button>
+                        </div>
+                            <button id="backButton" class="hidden px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl text-sm font-semibold hover:from-gray-700 hover:to-gray-800 transition-all duration-300 shadow-lg">
+                            <i class="fas fa-arrow-left mr-1"></i> Kembali
+                        </button>
+                    </div>
+                </div>
+                
+                    <div class="mb-8 p-6 bg-gradient-to-r from-red-50 to-red-100 rounded-2xl border-2 border-red-200 shadow-lg">
+                        <h3 class="text-xl font-bold text-red-800 mb-4 flex items-center">
+                            <i class="fas fa-drumstick-bite mr-3 text-red-600"></i>
+                            Stok Ayam Harian
+                        </h3>
+                        <div class="flex items-center gap-6 flex-wrap">
+                        <div class="flex-grow">
+                                <label for="chickenStockInput" class="block text-sm font-semibold text-gray-700 mb-2">Atur ayam tersedia untuk hari ini:</label>
+                                <div class="flex items-center gap-3">
+                                    <input type="number" id="chickenStockInput" min="0" class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300 bg-white/80 disabled:bg-gray-100">
+                                    <button id="saveStockBtn" class="px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:transform-none">Simpan</button>
+                            </div>
+                        </div>
+                            <div class="text-right">
+                                <p class="text-sm text-gray-600 font-medium">Ayam Terjual</p>
+                                <p id="chickenSoldCount" class="text-3xl font-black text-red-600">0 / 0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border-2 border-gray-100 shadow-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Menu</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Jml</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Harga Satuan</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Total</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Pengiriman</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable" class="bg-white divide-y divide-gray-100">
+                            <!-- Orders will be inserted here by JavaScript -->
+                        </tbody>
+                        <tfoot class="bg-gradient-to-r from-gray-50 to-gray-100">
+                            <tr>
+                                <td id="revenueLabel" colspan="5" class="px-6 py-4 text-right text-sm font-semibold text-gray-800">Total Pendapatan (Hari Ini):</td>
+                                <td id="totalRevenue" class="px-6 py-4 text-left text-lg font-bold text-red-600">Rp 0</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-right text-sm font-semibold text-gray-800">Total Pengeluaran (Hari Ini):</td>
+                                <td id="totalExpensesRow" class="px-6 py-4 text-left text-lg font-bold text-blue-600">Rp 0</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-right text-sm font-semibold text-gray-800">Biaya Pengiriman (Rp 1,000 per item):</td>
+                                <td id="deliveryCostsRow" class="px-6 py-4 text-left text-lg font-bold text-orange-600">Rp 0</td>
+                            </tr>
+                            <tr class="border-t-2 border-gray-300 bg-white">
+                                <td colspan="5" class="px-6 py-4 text-right text-xl font-bold text-gray-900">Pendapatan Bersih:</td>
+                                <td id="netIncome" class="px-6 py-4 text-left text-xl font-bold text-green-600">Rp 0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="mt-8 flex justify-end">
+                    <div class="flex gap-3">
+                        <button id="exportSalesBtn" class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 font-semibold text-sm shadow-lg hover:shadow-xl transform hover:scale-105">
+                            <i class="fas fa-file-csv mr-2"></i> Ekspor Laporan Keuangan
+                        </button>
+                        <button id="exportExpensesBtn" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-semibold text-sm shadow-lg hover:shadow-xl transform hover:scale-105">
+                            <i class="fas fa-file-invoice-dollar mr-2"></i> Ekspor Pengeluaran
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Daily Expenses -->
+        <div class="mt-12 glass-effect rounded-2xl shadow-xl p-8 card-hover">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                    <i class="fas fa-wallet text-white text-lg"></i>
+                </div>
+                Pengeluaran Harian untuk <span id="expenseDate" class="ml-2 text-red-600">Hari Ini</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-bold text-gray-700 mb-4 flex items-center">
+                        <i class="fas fa-plus-circle mr-2 text-red-500"></i>
+                        Tambah Pengeluaran
+                    </h3>
+                    <form id="expenseForm" class="space-y-6">
+                        <fieldset id="expenseFormFieldset">
+                            <div>
+                                <label for="expenseName" class="block text-sm font-semibold text-gray-700 mb-2">Item Pengeluaran</label>
+                                <input type="text" id="expenseName" placeholder="cth: Teh, Plastik" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300 bg-white/80">
+                            </div>
+                            <div>
+                                <label for="expenseAmount" class="block text-sm font-semibold text-gray-700 mb-2">Jumlah (Rp)</label>
+                                <input type="number" id="expenseAmount" min="0" placeholder="cth: 5000" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300 bg-white/80">
+                            </div>
+                            <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-105">
+                                <i class="fas fa-plus-circle mr-2"></i> Tambah Pengeluaran
+                            </button>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="md:col-span-2">
+                    <h3 class="text-lg font-bold text-gray-700 mb-4 flex items-center">
+                        <i class="fas fa-list-alt mr-2 text-red-500"></i>
+                        Daftar Pengeluaran
+                    </h3>
+                    <div class="overflow-x-auto rounded-xl border-2 border-gray-100 shadow-lg">
+                        <table class="min-w-full divide-y divide-gray-100">
+                            <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Item</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Jumlah</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expensesTable" class="bg-white divide-y divide-gray-100">
+                                <!-- Expense items will be inserted here -->
+                            </tbody>
+                            <tfoot class="bg-gradient-to-r from-gray-50 to-gray-100">
+                                <tr>
+                                    <td class="px-6 py-4 text-right text-sm font-semibold text-gray-800">Total Pengeluaran:</td>
+                                    <td id="totalExpenses" colspan="2" class="px-6 py-4 text-left text-lg font-bold text-red-600">Rp 0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Price Reference -->
+        <div class="mt-16 glass-effect rounded-2xl shadow-xl p-8 card-hover">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                    <i class="fas fa-info-circle text-white text-lg"></i>
+                </div>
+                Referensi Harga Menu
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="menu-card glass-effect p-6 rounded-2xl border-2 border-transparent transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-red-400 to-red-600 opacity-10 rounded-full -translate-y-10 translate-x-10"></div>
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-gray-800 text-lg">Ayam Geprek Paket</h3>
+                        <span class="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Populer</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4 leading-relaxed">Ayam renyah dengan sambal dan nasi</p>
+                    <div class="text-right">
+                        <span class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800">Rp 13,000</span>
+                    </div>
+                </div>
+                <div class="menu-card glass-effect p-6 rounded-2xl border-2 border-transparent transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-red-400 to-red-600 opacity-10 rounded-full -translate-y-10 translate-x-10"></div>
+                    <h3 class="font-bold text-gray-800 mb-3 text-lg">Ayam TO'O</h3>
+                    <p class="text-gray-600 text-sm mb-4 leading-relaxed">Resep spesial dengan bumbu tradisional</p>
+                    <div class="text-right">
+                        <span class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800">Rp 10,000</span>
+                    </div>
+                </div>
+                <div class="menu-card glass-effect p-6 rounded-2xl border-2 border-transparent transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-red-400 to-red-600 opacity-10 rounded-full -translate-y-10 translate-x-10"></div>
+                    <h3 class="font-bold text-gray-800 mb-3 text-lg">Ayam Geprek Paket Mie</h3>
+                    <p class="text-gray-600 text-sm mb-4 leading-relaxed">Ayam dengan sambal dan mie</p>
+                    <div class="text-right">
+                        <span class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800">Rp 17,000</span>
+                    </div>
+                </div>
+                <div class="menu-card glass-effect p-6 rounded-2xl border-2 border-transparent transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-red-400 to-red-600 opacity-10 rounded-full -translate-y-10 translate-x-10"></div>
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-gray-800 text-lg">Ayam Geprek Paket Mie + Nasi</h3>
+                        <span class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Paling Hemat</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4 leading-relaxed">Makanan lengkap dengan ayam, mie, dan nasi</p>
+                    <div class="text-right">
+                        <span class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800">Rp 20,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating action button -->
+    <button id="newOrderBtn" class="fixed bottom-8 right-8 bg-gradient-to-r from-red-600 to-red-700 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:shadow-red-500/50 transition-all duration-300 floating-btn transform hover:scale-110 z-40">
+        <i class="fas fa-plus text-2xl"></i>
+        <div class="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
+    </button>
+    
+    <!-- Toast notification -->
+    <div id="toast" class="fixed top-6 right-6 bg-white text-gray-800 px-6 py-4 rounded-2xl shadow-2xl border border-gray-100 hidden z-50 backdrop-blur-sm">
+        <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                <i class="fas fa-check-circle text-green-600"></i>
+            </div>
+            <span id="toastMessage" class="font-medium">Order added successfully!</span>
+        </div>
+    </div>
+
+    <script>
+        // Menu prices
+        const menuPrices = {
+            'Ayam Geprek Paket': 13000,
+            'Ayam TO\'O': 10000,
+            'Ayam Geprek Paket Mie': 17000,
+            'Ayam Geprek Paket Mie + Nasi': 20000
+        };
+        
+        // DOM elements
+        const orderForm = document.getElementById('orderForm');
+        const formFieldset = document.getElementById('formFieldset');
+        const menuSelect = document.getElementById('menu');
+        const quantityInput = document.getElementById('quantity');
+        const unitPriceInput = document.getElementById('unitPrice');
+        const totalPriceInput = document.getElementById('totalPrice');
+        const ordersTable = document.getElementById('ordersTable');
+        const totalRevenueElement = document.getElementById('totalRevenue');
+        const viewDateInput = document.getElementById('viewDate');
+        const salesTitle = document.getElementById('salesTitle');
+        const revenueLabel = document.getElementById('revenueLabel');
+        const filterAllBtn = document.getElementById('filterAll');
+        const filterDeliveredBtn = document.getElementById('filterDelivered');
+        const filterNotDeliveredBtn = document.getElementById('filterNotDelivered');
+        const filterButtons = document.getElementById('filterButtons');
+        const backButton = document.getElementById('backButton');
+        const clearCompletedBtn = document.getElementById('clearCompleted');
+        const exportSalesBtn = document.getElementById('exportSalesBtn');
+        const exportExpensesBtn = document.getElementById('exportExpensesBtn');
+        const newOrderBtn = document.getElementById('newOrderBtn');
+        const toast = document.getElementById('toast');
+        const chickenStockInput = document.getElementById('chickenStockInput');
+        const saveStockBtn = document.getElementById('saveStockBtn');
+        const chickenSoldCount = document.getElementById('chickenSoldCount');
+        const expenseForm = document.getElementById('expenseForm');
+        const expenseFormFieldset = document.getElementById('expenseFormFieldset');
+        const expenseNameInput = document.getElementById('expenseName');
+        const expenseAmountInput = document.getElementById('expenseAmount');
+        const expensesTable = document.getElementById('expensesTable');
+        const totalExpensesElement = document.getElementById('totalExpenses');
+        const expenseDateElement = document.getElementById('expenseDate');
+        const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
+        const deliveryNameContainer = document.getElementById('deliveryNameContainer');
+        const deliveryNameInput = document.getElementById('deliveryName');
+        const loginOverlay = document.getElementById('loginOverlay');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        const errorMessage = document.getElementById('errorMessage');
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const mainContent = document.getElementById('mainContent');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const userLoginBtn = document.getElementById('userLoginBtn');
+        const userContent = document.getElementById('userContent');
+        const userOrdersTable = document.getElementById('userOrdersTable');
+        const totalDeliveryOrders = document.getElementById('totalDeliveryOrders');
+        const totalDeliveryItems = document.getElementById('totalDeliveryItems');
+        const totalDeliveryValue = document.getElementById('totalDeliveryValue');
+        const userLogoutBtn = document.getElementById('userLogoutBtn');
+        
+        // State variables
+        const today = new Date().toISOString().split('T')[0];
+        let selectedDate;
+        let allOrders = JSON.parse(localStorage.getItem('ayamGeprekOrders')) || [];
+        let dailyStock = JSON.parse(localStorage.getItem('dailyChickenStock')) || {};
+        let dailyExpenses = JSON.parse(localStorage.getItem('dailyExpenses')) || {};
+        let ordersForSelectedDate = [];
+        let expensesForSelectedDate = [];
+        let currentFilter = 'all';
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        let isUserLoggedIn = localStorage.getItem('isUserLoggedIn') === 'true';
+        
+        // Event listeners
+        menuSelect.addEventListener('change', updatePrice);
+        quantityInput.addEventListener('input', calculateTotal);
+        orderForm.addEventListener('submit', addOrder);
+        viewDateInput.addEventListener('change', handleDateChange);
+        filterAllBtn.addEventListener('click', () => filterOrders('all'));
+        filterDeliveredBtn.addEventListener('click', () => filterOrders('delivered'));
+        filterNotDeliveredBtn.addEventListener('click', () => filterOrders('notDelivered'));
+        backButton.addEventListener('click', () => filterOrders('all'));
+        saveStockBtn.addEventListener('click', saveChickenStock);
+        expenseForm.addEventListener('submit', addExpense);
+
+        exportSalesBtn.addEventListener('click', exportSalesToCSV);
+        exportExpensesBtn.addEventListener('click', exportExpensesToCSV);
+        newOrderBtn.addEventListener('click', scrollToForm);
+        deliveryRadios.forEach(radio => {
+            radio.addEventListener('change', toggleDeliveryName);
+        });
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            // Check if admin or user login based on active button
+            if (adminLoginBtn.classList.contains('bg-white')) {
+                handleLogin(e);
+            } else {
+                handleUserLogin(e);
+            }
+        });
+        togglePasswordBtn.addEventListener('click', togglePasswordVisibility);
+        logoutBtn.addEventListener('click', handleLogout);
+        adminLoginBtn.addEventListener('click', () => {
+            setActiveLoginType('admin');
+        });
+        userLoginBtn.addEventListener('click', () => {
+            setActiveLoginType('user');
+        });
+        userLogoutBtn.addEventListener('click', handleUserLogout);
+        
+        // Initialize the app
+        function initializeApp() {
+            selectedDate = today;
+            viewDateInput.value = today;
+            updateViewForSelectedDate();
+            
+            if (isUserLoggedIn) {
+                loginOverlay.classList.add('hidden');
+                mainContent.classList.add('hidden');
+                userContent.classList.remove('hidden');
+                updateUserDashboard();
+            } else if (isLoggedIn) {
+                loginOverlay.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                userContent.classList.add('hidden');
+            } else {
+                loginOverlay.classList.remove('hidden');
+                mainContent.classList.add('hidden');
+                userContent.classList.add('hidden');
+                // Set default login type to admin
+                setActiveLoginType('admin');
+            }
+        }
+        
+        initializeApp();
+        
+        // Functions
+        function handleDateChange() {
+            selectedDate = viewDateInput.value;
+            updateViewForSelectedDate();
+        }
+
+        function updateViewForSelectedDate() {
+            const isToday = (selectedDate === today);
+            formFieldset.disabled = !isToday;
+            chickenStockInput.disabled = !isToday;
+            saveStockBtn.disabled = !isToday;
+            expenseFormFieldset.disabled = !isToday;
+
+            const dateForDisplay = new Date(selectedDate + 'T00:00:00');
+            const displayDateString = dateForDisplay.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            if (isToday) {
+                salesTitle.innerHTML = `<i class="fas fa-clipboard-list mr-3 text-red-500"></i> Penjualan Hari Ini`;
+                revenueLabel.textContent = `Total Pendapatan (Hari Ini):`;
+                expenseDateElement.textContent = 'Hari Ini';
+            } else {
+                salesTitle.innerHTML = `<i class="fas fa-clipboard-list mr-3 text-red-500"></i> Penjualan untuk ${displayDateString}`;
+                revenueLabel.textContent = `Total Pendapatan untuk ${displayDateString}:`;
+                expenseDateElement.textContent = displayDateString;
+            }
+
+            ordersForSelectedDate = allOrders.filter(order => order.date === selectedDate);
+            updateChickenStockView();
+            updateExpensesView();
+            renderOrders();
+            updateTotalRevenue();
+            updateNetIncome();
+        }
+
+        function updatePrice() {
+            const selectedMenu = menuSelect.value;
+            if (selectedMenu && menuPrices[selectedMenu]) {
+                unitPriceInput.value = menuPrices[selectedMenu];
+                calculateTotal();
+            } else {
+                unitPriceInput.value = '';
+                totalPriceInput.value = '';
+            }
+        }
+        
+        function calculateTotal() {
+            const quantity = parseInt(quantityInput.value) || 0;
+            const unitPrice = parseInt(unitPriceInput.value) || 0;
+            totalPriceInput.value = quantity * unitPrice;
+        }
+        
+        function addOrder(e) {
+            e.preventDefault();
+            
+            // Validate form
+            if (!menuSelect.value) {
+                showToast('Silakan pilih menu', 'error');
+                return;
+            }
+            
+            if (!quantityInput.value || parseInt(quantityInput.value) < 1) {
+                showToast('Silakan masukkan jumlah yang valid', 'error');
+                return;
+            }
+            
+            const quantityToAdd = parseInt(quantityInput.value);
+            const stockAvailable = dailyStock[selectedDate] || 0;
+            const stockSold = ordersForSelectedDate.reduce((sum, order) => sum + order.quantity, 0);
+
+            if (stockAvailable > 0 && (stockSold + quantityToAdd) > stockAvailable) {
+                const remaining = stockAvailable - stockSold;
+                showToast(`Tidak bisa menambah pesanan. Hanya tersisa ${remaining} ayam.`, 'error');
+                return;
+            }
+            
+            let deliveryOption = document.querySelector('input[name="delivery"]:checked').value;
+            let deliveryName = '';
+
+            if (deliveryOption === 'Delivered') {
+                deliveryName = deliveryNameInput.value.trim();
+                if (!deliveryName) {
+                    showToast('Silakan masukkan nama pengirim.', 'error');
+                    return;
+                }
+                deliveryOption = deliveryName;
+            }
+            
+            // Create new order
+            const newOrder = {
+                id: Date.now(),
+                menu: menuSelect.value,
+                quantity: quantityToAdd,
+                unitPrice: parseInt(unitPriceInput.value),
+                totalPrice: parseInt(totalPriceInput.value),
+                delivery: deliveryOption,
+                date: selectedDate,
+                completed: false
+            };
+            
+            // Add to orders array
+            allOrders.push(newOrder);
+            
+            // Save to localStorage
+            saveOrders();
+            
+            // Update orders for the current view
+            ordersForSelectedDate = allOrders.filter(order => order.date === selectedDate);
+
+            // Render updated orders
+            renderOrders();
+            
+            // Update total revenue and stock
+            updateTotalRevenue();
+            updateChickenStockView();
+            updateNetIncome();
+            
+            // Reset form
+            orderForm.reset();
+            unitPriceInput.value = '';
+            totalPriceInput.value = '';
+            document.getElementById('notDelivered').checked = true;
+            toggleDeliveryName();
+            
+            // Show success message
+            showToast('Pesanan berhasil ditambahkan!');
+            
+            // Scroll to orders table
+            setTimeout(() => {
+                document.querySelector('#ordersTable').scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        }
+        
+        function renderOrders(filter = currentFilter) {
+            let filteredOrders = [...ordersForSelectedDate];
+            
+            // Apply filter
+            if (filter === 'delivered') {
+                filteredOrders = ordersForSelectedDate.filter(order => order.delivery !== 'Not Delivered');
+            } else if (filter === 'notDelivered') {
+                filteredOrders = ordersForSelectedDate.filter(order => order.delivery === 'Not Delivered');
+            }
+            
+            // Clear table
+            ordersTable.innerHTML = '';
+            
+            if (filteredOrders.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                        Tidak ada pesanan. Tambah pesanan pertama Anda!
+                    </td>
+                `;
+                ordersTable.appendChild(row);
+                return;
+            }
+            
+            // Add each order to table
+            filteredOrders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${order.menu}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.quantity}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp ${order.unitPrice.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-red-600">Rp ${order.totalPrice.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold ${order.delivery !== 'Not Delivered' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'}">
+                            ${order.delivery}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="deleteOrder(${order.id})" class="text-red-600 hover:text-red-900">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+                ordersTable.appendChild(row);
+            });
+        }
+        
+        function filterOrders(filter) {
+            currentFilter = filter;
+            renderOrders(filter);
+            
+            // Update active filter button
+            const buttons = [filterAllBtn, filterDeliveredBtn, filterNotDeliveredBtn];
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-red-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+            });
+            
+            let activeButton;
+            if (filter === 'all') {
+                activeButton = filterAllBtn;
+            } else if (filter === 'delivered') {
+                activeButton = filterDeliveredBtn;
+            } else {
+                activeButton = filterNotDeliveredBtn;
+            }
+            
+            activeButton.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+            activeButton.classList.add('bg-red-600', 'text-white');
+
+            // Toggle button visibility
+            if (filter === 'all') {
+                filterButtons.classList.remove('hidden');
+                backButton.classList.add('hidden');
+            } else {
+                filterButtons.classList.add('hidden');
+                backButton.classList.remove('hidden');
+            }
+        }
+        
+
+        
+        function deleteOrder(orderId) {
+            if (confirm('Apakah Anda yakin ingin menghapus pesanan ini?')) {
+                allOrders = allOrders.filter(order => order.id !== orderId);
+                saveOrders();
+                ordersForSelectedDate = allOrders.filter(order => order.date === selectedDate);
+                renderOrders();
+                updateTotalRevenue();
+                updateChickenStockView();
+                updateNetIncome();
+                showToast('Pesanan berhasil dihapus!');
+            }
+        }
+        
+
+        
+        function updateTotalRevenue() {
+            const revenue = ordersForSelectedDate.reduce((total, order) => {
+                return total + order.totalPrice;
+            }, 0);
+            
+            totalRevenueElement.textContent = `Rp ${revenue.toLocaleString()}`;
+            updateNetIncome();
+        }
+        
+        function updateNetIncome() {
+            const revenue = ordersForSelectedDate.reduce((total, order) => {
+                return total + order.totalPrice;
+            }, 0);
+            
+            const expenses = expensesForSelectedDate.reduce((total, expense) => {
+                return total + expense.amount;
+            }, 0);
+            
+            const deliveryOrders = ordersForSelectedDate.filter(order => order.delivery !== 'Not Delivered');
+            const deliveryCosts = deliveryOrders.reduce((total, order) => {
+                return total + (order.quantity * 1000); // Rp 1,000 per item/quantity
+            }, 0);
+            
+            const netIncome = revenue - expenses - deliveryCosts;
+            
+            // Update all the display elements
+            document.getElementById('totalExpensesRow').textContent = `Rp ${expenses.toLocaleString()}`;
+            document.getElementById('deliveryCostsRow').textContent = `Rp ${deliveryCosts.toLocaleString()}`;
+            document.getElementById('netIncome').textContent = `Rp ${netIncome.toLocaleString()}`;
+            
+            // Color code the net income
+            const netIncomeElement = document.getElementById('netIncome');
+            if (netIncome >= 0) {
+                netIncomeElement.className = 'px-6 py-4 text-left text-lg font-bold text-green-600';
+            } else {
+                netIncomeElement.className = 'px-6 py-4 text-left text-lg font-bold text-red-600';
+            }
+        }
+        
+        function saveOrders() {
+            localStorage.setItem('ayamGeprekOrders', JSON.stringify(allOrders));
+        }
+        
+        function saveExpenses() {
+            localStorage.setItem('dailyExpenses', JSON.stringify(dailyExpenses));
+        }
+
+        function updateExpensesView() {
+            expensesForSelectedDate = dailyExpenses[selectedDate] || [];
+            renderExpenses();
+            updateTotalExpenses();
+        }
+
+        function addExpense(e) {
+            e.preventDefault();
+
+            const name = expenseNameInput.value.trim();
+            const amount = parseInt(expenseAmountInput.value);
+
+            if (!name || isNaN(amount) || amount <= 0) {
+                showToast('Silakan masukkan nama dan jumlah pengeluaran yang valid.', 'error');
+                return;
+            }
+
+            const newExpense = {
+                id: Date.now(),
+                name: name,
+                amount: amount
+            };
+
+            if (!dailyExpenses[selectedDate]) {
+                dailyExpenses[selectedDate] = [];
+            }
+            dailyExpenses[selectedDate].push(newExpense);
+
+            saveExpenses();
+            updateExpensesView();
+
+            expenseForm.reset();
+            showToast('Pengeluaran berhasil ditambahkan!');
+        }
+
+        function renderExpenses() {
+            expensesTable.innerHTML = '';
+
+            if (expensesForSelectedDate.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td colspan="3" class="px-6 py-4 text-center text-gray-500">Tidak ada pengeluaran yang tercatat pada tanggal ini.</td>`;
+                expensesTable.appendChild(row);
+                return;
+            }
+
+            expensesForSelectedDate.forEach(expense => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${expense.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp ${expense.amount.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="deleteExpense(${expense.id})" class="text-red-600 hover:text-red-900">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+                expensesTable.appendChild(row);
+            });
+        }
+
+        function deleteExpense(expenseId) {
+            if (confirm('Apakah Anda yakin ingin menghapus pengeluaran ini?')) {
+                dailyExpenses[selectedDate] = dailyExpenses[selectedDate].filter(expense => expense.id !== expenseId);
+                            saveExpenses();
+            updateExpensesView();
+            updateNetIncome();
+            showToast('Pengeluaran berhasil dihapus!');
+            }
+        }
+
+        function updateTotalExpenses() {
+            const total = expensesForSelectedDate.reduce((sum, expense) => sum + expense.amount, 0);
+            totalExpensesElement.textContent = `Rp ${total.toLocaleString()}`;
+            updateNetIncome();
+        }
+
+        function exportSalesToCSV() {
+            if (allOrders.length === 0) {
+                showToast('Tidak ada data penjualan untuk diekspor.', 'error');
+                return;
+            }
+
+            // Get today's data
+            const todayOrders = allOrders.filter(order => order.date === today);
+            const todayExpenses = dailyExpenses[today] || [];
+            
+            // Calculate financial summary
+            const revenue = todayOrders.reduce((total, order) => total + order.totalPrice, 0);
+            const expenses = todayExpenses.reduce((total, expense) => total + expense.amount, 0);
+            const deliveryOrders = todayOrders.filter(order => order.delivery !== 'Not Delivered');
+            const deliveryCosts = deliveryOrders.reduce((total, order) => total + (order.quantity * 1000), 0);
+            const netIncome = revenue - expenses - deliveryCosts;
+
+            // Create comprehensive CSV with financial summary
+            const csvRows = [];
+            
+            // Financial Summary Section
+            csvRows.push('LAPORAN KEUANGAN GEPREK DITO');
+            csvRows.push(`Tanggal: ${new Date(today).toLocaleDateString('id-ID')}`);
+            csvRows.push('');
+            csvRows.push('RINGKASAN KEUANGAN');
+            csvRows.push('Kategori,Jumlah (Rp)');
+            csvRows.push(`Total Pendapatan,${revenue.toLocaleString()}`);
+            csvRows.push(`Total Pengeluaran,${expenses.toLocaleString()}`);
+            csvRows.push(`Biaya Pengiriman (Rp 1,000 per item),${deliveryCosts.toLocaleString()}`);
+            csvRows.push(`Pendapatan Bersih,${netIncome.toLocaleString()}`);
+            csvRows.push('');
+            
+            // Orders Section
+            csvRows.push('DETAIL PESANAN');
+            csvRows.push('ID Pesanan,Tanggal,Menu,Jumlah,Harga Satuan,Total Harga,Pengiriman');
+            
+            todayOrders.forEach(order => {
+                const row = [
+                    order.id,
+                    order.date,
+                    `"${order.menu}"`,
+                    order.quantity,
+                    order.unitPrice,
+                    order.totalPrice,
+                    `"${order.delivery}"`
+                ];
+                csvRows.push(row.join(','));
+            });
+            
+            csvRows.push('');
+            
+            // Expenses Section
+            csvRows.push('DETAIL PENGELUARAN');
+            csvRows.push('Item,Jumlah (Rp)');
+            
+            if (todayExpenses.length > 0) {
+                todayExpenses.forEach(expense => {
+                    csvRows.push(`"${expense.name}",${expense.amount.toLocaleString()}`);
+                });
+            } else {
+                csvRows.push('Tidak ada pengeluaran,0');
+            }
+            
+            csvRows.push('');
+            
+            // Delivery Details Section
+            csvRows.push('DETAIL PENGIRIMAN');
+            csvRows.push('Menu,Jumlah Item,Biaya Pengiriman (Rp)');
+            
+            if (deliveryOrders.length > 0) {
+                deliveryOrders.forEach(order => {
+                    csvRows.push(`"${order.menu}",${order.quantity},${(order.quantity * 1000).toLocaleString()}`);
+                });
+            } else {
+                csvRows.push('Tidak ada pesanan pengiriman,0,0');
+            }
+
+            downloadCSV(csvRows.join('\n'), `laporan-keuangan-geprek-dito-${today}.csv`);
+            showToast('Laporan keuangan lengkap berhasil diekspor!');
+        }
+
+        function exportExpensesToCSV() {
+            const allExpenses = Object.values(dailyExpenses).flat();
+            if (allExpenses.length === 0) {
+                showToast('Tidak ada data pengeluaran untuk diekspor.', 'error');
+                return;
+            }
+
+            const headers = ['Tanggal', 'Item', 'Jumlah'];
+            const csvRows = [headers.join(',')];
+            
+            for (const date in dailyExpenses) {
+                dailyExpenses[date].forEach(expense => {
+                    const row = [
+                        date,
+                        `"${expense.name}"`,
+                        expense.amount
+                    ];
+                    csvRows.push(row.join(','));
+                });
+            }
+
+            downloadCSV(csvRows.join('\n'), `pengeluaran-geprek-dito-${today}.csv`);
+            showToast('Data pengeluaran berhasil diekspor!');
+        }
+
+        function downloadCSV(csvContent, fileName) {
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.href) {
+                URL.revokeObjectURL(link.href);
+            }
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function scrollToForm() {
+            document.querySelector('#orderForm').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function showToast(message, type = 'success') {
+            const toastMessage = document.getElementById('toastMessage');
+            const toast = document.getElementById('toast');
+            const iconContainer = toast.querySelector('.w-8.h-8');
+            const icon = iconContainer.querySelector('i');
+            
+            toastMessage.textContent = message;
+            
+            // Set toast styling based on type
+            if (type === 'error') {
+                iconContainer.className = 'w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3';
+                icon.className = 'fas fa-exclamation-circle text-red-600';
+            } else if (type === 'info') {
+                iconContainer.className = 'w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3';
+                icon.className = 'fas fa-info-circle text-blue-600';
+            } else {
+                iconContainer.className = 'w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3';
+                icon.className = 'fas fa-check-circle text-green-600';
+            }
+            
+            // Show toast
+            toast.classList.remove('hidden');
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+        
+        function saveChickenStock() {
+            const stockValue = parseInt(chickenStockInput.value);
+
+            if (isNaN(stockValue) || stockValue < 0) {
+                showToast('Silakan masukkan jumlah ayam yang valid.', 'error');
+                return;
+            }
+
+            dailyStock[selectedDate] = stockValue;
+            localStorage.setItem('dailyChickenStock', JSON.stringify(dailyStock));
+            
+            showToast('Stok ayam berhasil diperbarui!');
+            updateChickenStockView();
+        }
+
+        function updateChickenStockView() {
+            const stockAvailable = dailyStock[selectedDate] || 0;
+            const stockSold = ordersForSelectedDate.reduce((sum, order) => sum + order.quantity, 0);
+
+            chickenStockInput.value = stockAvailable > 0 ? stockAvailable : '';
+            chickenSoldCount.innerHTML = `${stockSold} / <span class="text-red-700 font-bold">${stockAvailable || '∞'}</span>`;
+        }
+        
+        function toggleDeliveryName() {
+            if (document.querySelector('input[name="delivery"]:checked').value === 'Delivered') {
+                deliveryNameContainer.classList.remove('hidden');
+            } else {
+                deliveryNameContainer.classList.add('hidden');
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (username === 'admin' && password === 'admin123') {
+                isLoggedIn = true;
+                localStorage.setItem('isLoggedIn', 'true');
+                loginOverlay.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                showToast('Login berhasil!', 'success');
+                // Optionally, redirect to a dashboard or main page after successful login
+                // window.location.href = 'dashboard.html'; 
+            } else {
+                loginError.classList.remove('hidden');
+                errorMessage.textContent = 'Username atau password salah!';
+                showToast('Login gagal. Username atau password salah.', 'error');
+            }
+        }
+
+        function handleUserLogin(e) {
+            e.preventDefault();
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (username === 'user' && password === 'user123') {
+                isUserLoggedIn = true;
+                localStorage.setItem('isUserLoggedIn', 'true');
+                loginOverlay.classList.add('hidden');
+                loginForm.classList.add('hidden');
+                userContent.classList.remove('hidden');
+                updateUserDashboard();
+                showToast('Login berhasil!', 'success');
+                // Optionally, redirect to a dashboard or main page after successful login
+                // window.location.href = 'dashboard.html'; 
+            } else {
+                loginError.classList.remove('hidden');
+                errorMessage.textContent = 'Username atau password salah!';
+                showToast('Login gagal. Username atau password salah.', 'error');
+            }
+        }
+
+        function handleLogout() {
+            isLoggedIn = false;
+            localStorage.removeItem('isLoggedIn');
+            loginOverlay.classList.remove('hidden');
+            mainContent.classList.add('hidden');
+            showToast('Anda telah keluar.', 'info');
+            // Optionally, redirect to login page
+            // window.location.href = 'index.html'; 
+        }
+
+        function handleUserLogout() {
+            isUserLoggedIn = false;
+            localStorage.removeItem('isUserLoggedIn');
+            loginOverlay.classList.remove('hidden');
+            loginForm.classList.remove('hidden');
+            userContent.classList.add('hidden');
+            showToast('Anda telah keluar.', 'info');
+            // Optionally, redirect to login page
+            // window.location.href = 'index.html'; 
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const icon = togglePasswordBtn.querySelector('i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function setActiveLoginType(type) {
+            // Reset form and error
+            loginForm.reset();
+            loginError.classList.add('hidden');
+            errorMessage.textContent = '';
+            
+            // Update button styles
+            if (type === 'admin') {
+                adminLoginBtn.className = 'flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-300 bg-white text-gray-700 shadow-sm';
+                userLoginBtn.className = 'flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-300 text-gray-600 hover:text-gray-800';
+                loginForm.onsubmit = handleLogin;
+            } else {
+                userLoginBtn.className = 'flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-300 bg-white text-gray-700 shadow-sm';
+                adminLoginBtn.className = 'flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-300 text-gray-600 hover:text-gray-800';
+                loginForm.onsubmit = handleUserLogin;
+            }
+        }
+
+        function updateUserDashboard() {
+            // Get today's delivery orders
+            const todayDeliveryOrders = allOrders.filter(order => 
+                order.date === today && order.delivery !== 'Not Delivered'
+            );
+            
+            // Update summary cards
+            totalDeliveryOrders.textContent = todayDeliveryOrders.length;
+            
+            const totalItems = todayDeliveryOrders.reduce((sum, order) => sum + order.quantity, 0);
+            totalDeliveryItems.textContent = totalItems;
+            
+            const totalValue = todayDeliveryOrders.reduce((sum, order) => sum + order.totalPrice, 0);
+            totalDeliveryValue.textContent = `Rp ${totalValue.toLocaleString()}`;
+            
+            // Render delivery orders table
+            renderUserOrders(todayDeliveryOrders);
+        }
+
+        function renderUserOrders(deliveryOrders) {
+            userOrdersTable.innerHTML = '';
+            
+            if (deliveryOrders.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                        Tidak ada pesanan pengiriman untuk hari ini.
+                    </td>
+                `;
+                userOrdersTable.appendChild(row);
+                return;
+            }
+            
+            deliveryOrders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${order.menu}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.quantity}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp ${order.unitPrice.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-red-600">Rp ${order.totalPrice.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                            ${order.delivery}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">
+                            Menunggu Pengiriman
+                        </span>
+                    </td>
+                `;
+                userOrdersTable.appendChild(row);
+            });
+        }
+        
+        // Make functions available globally for inline event handlers
+        window.deleteOrder = deleteOrder;
+        window.deleteExpense = deleteExpense;
+    </script>
+        </div> <!-- Closing mainContent div -->
+    </div> <!-- Closing mainContent div -->
+</body>
+</html>
